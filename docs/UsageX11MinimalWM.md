@@ -46,17 +46,32 @@ Edit `~/.config/flameshot/flameshot.ini` and add, under the `[General]` section:
 useX11LegacyScreenshot=true
 ```
 
-On a multi-monitor setup, v14 also asks which screen to capture. To draw the selection tool across every monitor again, add:
-
-```ini
-captureAllMonitors=true
-```
-
 Then restart the Flameshot tray daemon so the new setting is picked up:
 
 ```sh
 killall flameshot 2>/dev/null; flameshot &
 ```
+
+## Multi-monitor capture
+
+Starting with v14, `flameshot gui` asks which monitor to capture. Earlier versions drew the selection tool across the whole desktop, so a region could span more than one screen.
+
+**Capture all monitors (skip monitor selection)** restores that behavior. It is available on Linux only.
+
+### From the GUI
+
+Open **Configuration → General** and tick **"Capture all monitors (skip monitor selection)"**.
+
+The neighboring option, **"Capture active monitor"**, skips the picker and captures only the screen under the cursor. Enabling either option clears the other.
+
+### From the config file
+
+```ini
+[General]
+captureAllMonitors=true
+```
+
+Restart the tray daemon the same way as for the legacy X11 option above.
 
 ## Background: which portal backends implement Screenshot?
 

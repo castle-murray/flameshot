@@ -170,7 +170,9 @@ Please [refer to this document](docs/UsageHyprlandSwayWlroots.md) for detailed i
 
 ### Usage on minimal X11 window managers
 
-On minimal X11 window managers (i3, dwm, xmonad, bspwm, ...), capturing may fail because no portal backend implements the Screenshot interface (errors such as *"Could not locate the org.freedesktop.portal.Desktop service"* or *"Screenshot portal timed out"*). Please [refer to this document](docs/UsageX11MinimalWM.md) for the fix (enabling the legacy X11 capture).
+On minimal X11 window managers (i3, dwm, xmonad, bspwm, AwesomeWM, ...), capturing may fail because no portal backend implements the Screenshot interface (errors such as *"Could not locate the org.freedesktop.portal.Desktop service"* or *"Screenshot portal timed out"*). Enable **Use legacy X11 screenshot method** under **Configuration → General**. Details are in [Usage on minimal X11 window managers](docs/UsageX11MinimalWM.md).
+
+Starting with v14, `flameshot gui` also asks which monitor to capture, instead of drawing the selection tool across every screen. To restore that earlier behavior, enable **Capture all monitors (skip monitor selection)** on the same General page, or set `captureAllMonitors=true` under `[General]` in `~/.config/flameshot/flameshot.ini`. That option is Linux-only. **Capture active monitor** is the other choice: it skips the picker and grabs only the screen under the cursor. Turning one on turns the other off.
 
 ### CLI configuration
 
