@@ -343,6 +343,13 @@ QPixmap ScreenGrabber::grabEntireDesktop(bool& ok, int preSelectedMonitor)
         }
     }
 
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
+    if (ConfigHandler().captureAllMonitors()) {
+        m_selectedMonitor = -1;
+        return screenshot;
+    }
+#endif
+
     return selectMonitorAndCrop(screenshot, ok);
 }
 

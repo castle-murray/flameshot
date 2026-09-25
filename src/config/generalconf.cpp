@@ -57,6 +57,9 @@ GeneralConf::GeneralConf(QWidget* parent)
 #if !defined(Q_OS_MACOS)
     initCaptureActiveMonitor();
 #endif
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
+    initCaptureAllMonitors();
+#endif
 #if defined(Q_OS_MACOS)
     initUseNativeFullscreen();
 #endif
@@ -137,6 +140,7 @@ void GeneralConf::_updateComponents(bool allowEmptySavePath)
 #endif
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
     m_useX11LegacyScreenshot->setChecked(config.useX11LegacyScreenshot());
+    m_captureAllMonitors->setChecked(config.captureAllMonitors());
 #endif
 }
 
@@ -957,6 +961,12 @@ void GeneralConf::initCaptureActiveMonitor()
 void GeneralConf::captureActiveMonitorChanged(bool checked)
 {
     ConfigHandler().setCaptureActiveMonitor(checked);
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
+    if (checked && m_captureAllMonitors->isChecked()) {
+        m_captureAllMonitors->setChecked(false);
+        ConfigHandler().setCaptureAllMonitors(false);
+    }
+#endif
 }
 #endif
 
@@ -1004,5 +1014,30 @@ void GeneralConf::initUseX11LegacyScreenshot()
 void GeneralConf::useX11LegacyScreenshotChanged(bool checked)
 {
     ConfigHandler().setUseX11LegacyScreenshot(checked);
+}
+
+void GeneralConf::initCaptureAllMonitors()
+{
+    m_captureAllMonitors = new QCheckBox(
+      tr("Capture all monitors (skip monitor selection)"), this);
+    m_captureAllMonitors->setToolTip(
+      tr("Draw the capture tool across every monitor instead of asking "
+         "which screen to capture. This is how Flameshot behaved before "
+         "version 14."));
+    m_scrollAreaLayout->addWidget(m_captureAllMonitors);
+
+    connect(m_captureAllMonitors,
+            &QCheckBox::clicked,
+            this,
+            &GeneralConf::captureAllMonitorsChanged);
+}
+
+void GeneralConf::captureAllMonitorsChanged(bool checked)
+{
+    ConfigHandler().setCaptureAllMonitors(checked);
+    if (checked && m_captureActiveMonitor->isChecked()) {
+        m_captureActiveMonitor->setChecked(false);
+        ConfigHandler().setCaptureActiveMonitor(false);
+    }
 }
 #endif

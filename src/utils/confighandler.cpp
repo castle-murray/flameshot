@@ -152,6 +152,9 @@ static QMap<class QString, QSharedPointer<ValueHandler>>
     // Bypass freedesktop portal and use Qt's native X11
     // screenshot method. Intended for WMs without xdg-desktop-portal.
     OPTION("useX11LegacyScreenshot"      ,Bool               ( false         )),
+    // Skip the per-monitor picker and draw the capture tool across
+    // every screen, as Flameshot did before v14.
+    OPTION("captureAllMonitors"          ,Bool               ( false         )),
 #endif
 };
 

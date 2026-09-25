@@ -46,6 +46,12 @@ Edit `~/.config/flameshot/flameshot.ini` and add, under the `[General]` section:
 useX11LegacyScreenshot=true
 ```
 
+On a multi-monitor setup, v14 also asks which screen to capture. To draw the selection tool across every monitor again, add:
+
+```ini
+captureAllMonitors=true
+```
+
 Then restart the Flameshot tray daemon so the new setting is picked up:
 
 ```sh
